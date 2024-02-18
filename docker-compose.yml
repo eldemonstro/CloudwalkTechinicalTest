@@ -10,6 +10,7 @@ services:
       - postgres
     env_file:
       - .env
+    command: rake server
   postgres:
     image: postgres:12.3
     volumes:

@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_16_212910) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_18_170056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "configurations", force: :cascade do |t|
+    t.datetime "start_nightly_hour", null: false
+    t.datetime "end_nightly_hour", null: false
+    t.decimal "max_nightly_amount", null: false
+    t.integer "max_transactions_in_row", null: false
+    t.integer "max_transactions_interval_minutes", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "transactions", force: :cascade do |t|
     t.string "card_number"
@@ -23,7 +33,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_16_212910) do
     t.datetime "transaction_date"
     t.decimal "transaction_amount"
     t.boolean "chargeback"
-    t.integer "recommendation"
+    t.integer "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["device_id"], name: "index_transactions_on_device_id"

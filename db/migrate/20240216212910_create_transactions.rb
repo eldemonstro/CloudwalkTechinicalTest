@@ -10,7 +10,7 @@ class CreateTransactions < ActiveRecord::Migration[7.1]
       t.decimal :transaction_amount
 
       t.boolean :chargeback, null: true
-      t.integer :recommendation, null: true
+      t.integer :score, null: true
 
       t.timestamps null: false
     end

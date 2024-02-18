@@ -1,5 +1,17 @@
 require 'sinatra/activerecord'
 require 'sinatra/activerecord/rake'
+require './transaction_approver_api'
+require "minitest/test_task"
+
+ENV['APP_ENV'] = 'development'
+ENV['RAILS_ENV'] ||= ENV['APP_ENV']
+
+Minitest::TestTask.create(:test) do |t|
+  t.libs << "test"
+  t.libs << "lib"
+  t.warning = false
+  t.test_globs = ["test/**/*_test.rb"]
+end
 
 desc "Start the server"
 task :server do
@@ -11,11 +23,6 @@ task :server do
   ENV["PORT"] ||= "3000"
 
   exec "ruby transaction_approver_api.rb"
-end
-
-desc 'Tests'
-task :test do
-  Dir.glob('./tests/**/*_test.rb').each { |t| exec "ruby #{t}" }
 end
   
 desc "Start the console"
