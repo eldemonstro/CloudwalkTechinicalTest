@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/activerecord'
-require "sinatra/json"
-require "json"
+require 'sinatra/json'
+require 'json'
 require './models/transaction'
 require './models/configuration'
 
-set :database_file, "./config/database.yml"
+set :database_file, './config/database.yml'
 set :bind, '0.0.0.0'
 
 before do
-  auth_token = request.env['HTTP_AUTHENTICATION_TOKEN'] || request.env['AUTHENTICATION_TOKEN'] 
+  auth_token = request.env['HTTP_AUTHENTICATION_TOKEN'] || request.env['AUTHENTICATION_TOKEN']
 
   # JWT.authorization.call(auth_token)
 
@@ -30,9 +32,9 @@ post '/' do
     transaction.assert_score!
 
     [201, json({
-      transaction_id: transaction.reload.transaction_id,
-      recommendation: transaction.reload.recommendation
-    })]
+                 transaction_id: transaction.reload.transaction_id,
+                 recommendation: transaction.reload.recommendation
+               })]
   else
     halt 412, "Invalid Parameters: #{transaction.errors.full_messages.join(', ')}"
   end
@@ -44,9 +46,7 @@ post '/configuration' do
   configuration = Configuration.last.dup || Configuration.new
   configuration.assign_attributes(configuration_params)
 
-  if configuration.save
-    configuration.to_json
-  end
+  configuration.to_json if configuration.save
 end
 
 put '/chargeback' do
@@ -56,15 +56,17 @@ put '/chargeback' do
   transaction.save!
 
   [200, json({
-    transaction_id: transaction.reload.transaction_id,
-    chargeback: transaction.reload.chargeback
-  })]
+               transaction_id: transaction.reload.transaction_id,
+               chargeback: transaction.reload.chargeback
+             })]
 end
 
 def transaction_params(params)
-  params.slice(:transaction_id, :merchant_id, :user_id, :card_number, :transaction_date, :transaction_amount, :device_id)
+  params.slice(:transaction_id, :merchant_id, :user_id, :card_number, :transaction_date, :transaction_amount,
+               :device_id)
 end
 
 def configuration_params(params)
-  params.slice(:start_nightly_hour, :end_nightly_hour, :max_nightly_amount, :max_transactions_in_row, :max_transactions_interval_minutes)
+  params.slice(:start_nightly_hour, :end_nightly_hour, :max_nightly_amount, :max_transactions_in_row,
+               :max_transactions_interval_minutes)
 end

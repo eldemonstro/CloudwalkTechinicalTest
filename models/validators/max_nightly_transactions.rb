@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Validators
   class MaxNightlyTransaction
     def self.call(transaction, configuration)
@@ -5,7 +7,10 @@ module Validators
 
       transaction_hour = transaction.transaction_date.hour
 
-      return 0 if configuration.start_nightly_hour.hour >= transaction_hour && transaction_hour >= configuration.end_nightly_hour.hour
+      if configuration.start_nightly_hour.hour >= transaction_hour &&
+         transaction_hour >= configuration.end_nightly_hour.hour
+        return 0
+      end
 
       10
     end

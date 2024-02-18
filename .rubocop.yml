@@ -1,0 +1,25 @@
+inherit_from: .rubocop_todo.yml
+
+Style/Documentation:
+  Enabled: False
+
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'bin/{rails,rake}'
+    - !ruby/regexp /old_and_unused\.rb$/
+    - 'transactional_test.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'test/**/*'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'test/**/*'
