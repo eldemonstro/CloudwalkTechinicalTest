@@ -4,8 +4,8 @@ source "https://rubygems.org"
 
 gem 'sinatra'
 gem 'pg'
-gem 'activerecord'
-gem 'sinatra-activerecord'
+gem 'activerecord', require: false
+gem 'sinatra-activerecord', require: false
 gem 'rake'
 gem 'puma'
 
